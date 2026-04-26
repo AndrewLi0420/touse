@@ -17,426 +17,434 @@
       min-height: 100vh;
     }
 
+    /* ── Join screen ── */
+    .join-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .join-card {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 40px;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+    }
+    .join-card h1 { font-size: 28px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .join-subtitle { color: #555; font-size: 14px; margin-bottom: 28px; line-height: 1.5; }
+    .join-input {
+      width: 100%;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 16px;
+      color: #fff;
+      font-family: inherit;
+      outline: none;
+      margin-bottom: 10px;
+      transition: border-color 0.15s;
+    }
+    .join-input:focus { border-color: #555; }
+    .join-btn {
+      width: 100%;
+      background: #222;
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .join-btn:hover:not(:disabled) { background: #2a2a2a; border-color: #666; }
+    .join-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ── Loading ── */
+    .loading {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #555;
+      font-size: 15px;
+    }
+
+    /* ── Header ── */
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 20px 32px;
-      border-bottom: 1px solid #2a2a2a;
+      padding: 14px 28px;
+      border-bottom: 1px solid #1e1e1e;
       background: #141414;
       position: sticky;
       top: 0;
       z-index: 10;
+      gap: 16px;
     }
-
-    header h1 {
-      font-size: 20px;
-      font-weight: 600;
-      letter-spacing: -0.3px;
-      color: #fff;
-    }
-
-    .header-stats {
+    header h1 { font-size: 18px; font-weight: 700; color: #fff; white-space: nowrap; }
+    .header-right {
       display: flex;
-      gap: 32px;
       align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
-
-    .stat {
-      text-align: right;
+    .my-identity {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
     }
-
-    .stat-label {
+    .my-identity:hover { border-color: #444; }
+    .identity-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .my-room-tag {
       font-size: 11px;
       color: #666;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      padding: 2px 8px;
+      background: #1e1e1e;
+      border-radius: 4px;
     }
-
-    .stat-value {
-      font-size: 16px;
-      font-weight: 600;
-      color: #fff;
-      margin-top: 1px;
+    .locked-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #c0792b;
+      background: #1e1200;
+      border: 1px solid #3a2500;
+      padding: 5px 12px;
+      border-radius: 20px;
     }
-
+    .disconnected-pill {
+      font-size: 12px;
+      color: #e74c3c;
+      background: #2a1010;
+      border: 1px solid #5a2020;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    .header-stats { display: flex; gap: 24px; }
+    .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #555; }
+    .stat-value { font-size: 15px; font-weight: 600; color: #fff; margin-top: 1px; }
     .reset-btn {
       background: none;
-      border: 1px solid #333;
-      color: #888;
-      padding: 6px 14px;
+      border: 1px solid #2a2a2a;
+      color: #666;
+      padding: 6px 12px;
       border-radius: 6px;
       cursor: pointer;
       font-size: 13px;
       transition: all 0.15s;
+      white-space: nowrap;
     }
+    .reset-btn:hover { border-color: #444; color: #aaa; }
 
-    .reset-btn:hover {
-      border-color: #555;
-      color: #ccc;
-    }
-
-    .main {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 28px 24px;
-    }
-
-    /* User selector */
+    /* ── Main ── */
+    .main { max-width: 1200px; margin: 0 auto; padding: 28px 24px; }
     .section-label {
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      color: #555;
-      margin-bottom: 12px;
+      color: #444;
       font-weight: 600;
+      margin-bottom: 12px;
     }
 
-    .user-section {
-      margin-bottom: 36px;
-    }
-
-    .users-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .user-btn {
+    /* ── Online users ── */
+    .online-section { margin-bottom: 32px; }
+    .online-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .online-chip {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      border-radius: 8px;
+      gap: 7px;
+      padding: 6px 12px;
       border: 1px solid #2a2a2a;
-      background: #1a1a1a;
-      color: #aaa;
-      cursor: pointer;
-      font-size: 14px;
-      transition: all 0.15s;
-      font-family: inherit;
+      border-radius: 20px;
+      font-size: 13px;
+      color: #bbb;
+      background: #161616;
     }
+    .online-chip.me { color: #fff; }
+    .online-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .chip-room { font-size: 11px; opacity: 0.75; }
 
-    .user-btn:hover {
-      border-color: #444;
-      color: #ddd;
-    }
-
-    .user-btn.active {
-      background: #1a2a1a;
-      border-color: #3a7a3a;
-      color: #6de06d;
-    }
-
-    .user-avatar {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .user-name-display {
-      cursor: text;
-    }
-
-    .user-name-input {
-      background: transparent;
-      border: none;
-      color: inherit;
-      font-size: 14px;
-      font-family: inherit;
-      outline: none;
-      width: 80px;
-    }
-
-    /* Rooms grid */
+    /* ── Rooms grid ── */
     .rooms-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+      gap: 14px;
       margin-bottom: 36px;
     }
 
     .room-card {
-      background: #1a1a1a;
-      border: 1px solid #2a2a2a;
+      background: #161616;
+      border: 1px solid #222;
       border-radius: 12px;
-      padding: 20px;
-      transition: border-color 0.2s;
+      padding: 18px;
       position: relative;
       overflow: hidden;
+      transition: border-color 0.2s, opacity 0.2s;
     }
-
+    .room-card.dimmed { opacity: 0.45; pointer-events: none; }
     .room-card::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       height: 3px;
-      background: #2a2a2a;
+      background: #222;
       transition: background 0.3s;
     }
+    .room-card.up::before    { background: #c0392b; }
+    .room-card.down::before  { background: #27ae60; }
+    .room-card.mine          { border-color: var(--my-color, #444); }
+    .room-card.mine::after {
+      content: 'YOUR ROOM';
+      position: absolute;
+      top: 10px; right: 14px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      color: var(--my-color, #888);
+      opacity: 0.6;
+    }
+    .room-card.confirming-card {
+      border-color: #3a3000;
+      background: #141200;
+    }
 
-    .room-card.up::before { background: #c0392b; }
-    .room-card.down::before { background: #27ae60; }
-
-    .room-card-header {
+    .room-card-top {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
-
-    .room-name {
-      font-size: 15px;
-      font-weight: 600;
-      color: #e0e0e0;
-      line-height: 1.3;
-    }
-
+    .room-name { font-size: 14px; font-weight: 600; color: #ddd; line-height: 1.3; }
     .room-badge {
       font-size: 10px;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      padding: 3px 8px;
+      letter-spacing: 0.4px;
+      padding: 2px 7px;
       border-radius: 4px;
-      background: #2a2a2a;
-      color: #888;
+      background: #222;
+      color: #666;
       white-space: nowrap;
       margin-left: 8px;
+      flex-shrink: 0;
+    }
+    .room-badge.double { background: #161e2e; color: #5580aa; }
+
+    /* price */
+    .price-main { font-size: 26px; font-weight: 700; color: #fff; letter-spacing: -0.5px; }
+    .price-per  { font-size: 12px; color: #555; margin-top: 2px; }
+    .price-delta { font-size: 12px; font-weight: 500; margin-top: 5px; }
+    .price-delta.neutral { color: #444; }
+    .price-delta.up      { color: #c0392b; }
+    .price-delta.down    { color: #27ae60; }
+
+    /* claimers */
+    .claimers { margin: 12px 0 10px; min-height: 34px; }
+    .claimer-row { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
+    .claimer-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .claimer-name { font-size: 13px; color: #bbb; }
+    .claimer-name.me { color: #fff; font-weight: 600; }
+    .claimer-via {
+      font-size: 10px;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .claimer-via.bid   { background: #1e1500; color: #806020; }
+    .claimer-via.claim { background: #0e1e10; color: #3d7a4a; }
+    .open-slot { font-size: 12px; color: #333; font-style: italic; }
+    .unclaimed { font-size: 13px; color: #333; font-style: italic; }
+
+    /* normal action buttons */
+    .room-actions { display: flex; gap: 8px; }
+    .btn-claim, .btn-bid, .btn-release {
+      flex: 1;
+      padding: 9px 8px;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .btn-claim {
+      background: #0f2010;
+      border: 1px solid #1e4020;
+      color: #3d9e50;
+    }
+    .btn-claim:hover { background: #162a18; border-color: #2e6030; color: #5abf6d; }
+    .btn-bid {
+      background: #1e1500;
+      border: 1px solid #3a2a00;
+      color: #b08020;
+    }
+    .btn-bid:hover { background: #261c00; border-color: #4a3600; color: #d09830; }
+    .btn-release {
+      flex: 1;
+      padding: 9px 8px;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+      background: #1a1010;
+      border: 1px solid #2e1a1a;
+      color: #885555;
+    }
+    .btn-release:hover { background: #221414; border-color: #3e2020; color: #aa6666; }
+
+    .locked-msg {
+      font-size: 12px;
+      color: #3a2800;
+      background: #1a1200;
+      border: 1px solid #2e2000;
+      border-radius: 7px;
+      padding: 8px 10px;
+      text-align: center;
+      width: 100%;
     }
 
-    .room-badge.double {
-      background: #1a2030;
-      color: #6699cc;
+    /* ── Confirm UI ── */
+    .confirm-box {
+      background: #111000;
+      border: 1px solid #3a3000;
+      border-radius: 8px;
+      padding: 14px;
+      margin-top: 2px;
     }
-
-    .price-section {
-      margin-bottom: 14px;
+    .confirm-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 4px;
     }
-
-    .price-main {
-      font-size: 28px;
+    .confirm-price {
+      font-size: 24px;
       font-weight: 700;
       color: #fff;
       letter-spacing: -0.5px;
     }
-
-    .price-per-person {
-      font-size: 13px;
-      color: #666;
-      margin-top: 2px;
-    }
-
-    .price-delta {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 13px;
-      font-weight: 500;
-      margin-top: 6px;
-    }
-
-    .price-delta.neutral { color: #555; }
-    .price-delta.up { color: #e74c3c; }
-    .price-delta.down { color: #2ecc71; }
-
-    .bidders-section {
-      min-height: 28px;
-      margin-bottom: 14px;
-    }
-
-    .bidders-label {
-      font-size: 11px;
-      color: #444;
-      margin-bottom: 6px;
-    }
-
-    .bidders-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-    }
-
-    .bidder-chip {
+    .confirm-price-label {
       font-size: 12px;
-      padding: 2px 8px;
-      border-radius: 4px;
-      border: 1px solid #2a2a2a;
-      color: #888;
-    }
-
-    .bid-count-badge {
-      font-size: 10px;
-      background: #2a2a2a;
       color: #666;
-      padding: 1px 5px;
-      border-radius: 3px;
-      margin-left: 3px;
     }
-
-    .bid-button {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #333;
-      background: #222;
-      color: #ccc;
-      font-size: 14px;
-      font-weight: 600;
+    .confirm-sub {
+      font-size: 12px;
+      color: #555;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .confirm-sub span { color: #888; }
+    .confirm-btns { display: flex; gap: 8px; }
+    .btn-confirm-claim, .btn-confirm-bid, .btn-cancel {
+      flex: 1;
+      padding: 10px 8px;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 700;
       cursor: pointer;
-      transition: all 0.15s;
       font-family: inherit;
+      transition: all 0.15s;
     }
-
-    .bid-button:hover:not(:disabled) {
-      background: #2a2a2a;
-      border-color: #555;
-      color: #fff;
+    .btn-confirm-claim {
+      background: #163020;
+      border: 1px solid #2a6038;
+      color: #4dbb66;
     }
-
-    .bid-button:disabled {
-      opacity: 0.35;
-      cursor: not-allowed;
+    .btn-confirm-claim:hover { background: #1e4028; border-color: #3a8050; color: #6ddb86; }
+    .btn-confirm-bid {
+      background: #2a1e00;
+      border: 1px solid #5a3a00;
+      color: #d09830;
     }
-
-    .bid-button.active-user:hover:not(:disabled) {
-      background: #1a2a1a;
-      border-color: #3a7a3a;
-      color: #6de06d;
+    .btn-confirm-bid:hover { background: #362600; border-color: #6a4800; color: #e8b840; }
+    .btn-cancel {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      color: #666;
     }
+    .btn-cancel:hover { border-color: #555; color: #999; }
 
-    /* History */
-    .history-section {
-      margin-top: 8px;
-    }
-
-    .history-empty {
-      color: #444;
-      font-size: 14px;
-      padding: 20px 0;
-    }
-
+    /* ── History ── */
+    .history-empty { font-size: 13px; color: #333; padding: 16px 0; }
     .history-list {
       display: flex;
       flex-direction: column;
-      gap: 1px;
-      max-height: 320px;
+      gap: 2px;
+      max-height: 300px;
       overflow-y: auto;
     }
-
     .history-item {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 10px 14px;
-      background: #141414;
+      gap: 10px;
+      padding: 8px 12px;
+      background: #111;
       border-radius: 6px;
       font-size: 13px;
     }
+    .history-item:first-child { background: #161616; }
+    .h-user  { font-weight: 600; min-width: 80px; }
+    .h-verb  { color: #444; font-size: 12px; min-width: 60px; }
+    .h-verb[data-action="claim"]   { color: #3d7a4a; }
+    .h-verb[data-action="release"] { color: #663333; }
+    .h-verb[data-action="bid"]     { color: #7a6020; }
+    .h-room  { color: #888; flex: 1; }
+    .h-delta { color: #b08020; font-weight: 600; font-size: 12px; }
+    .h-time  { color: #333; font-size: 11px; min-width: 55px; text-align: right; }
 
-    .history-item:first-child {
-      background: #1a1a1a;
-    }
-
-    .history-user {
-      font-weight: 600;
-      min-width: 80px;
-    }
-
-    .history-arrow {
-      color: #444;
-    }
-
-    .history-room {
-      color: #aaa;
-      flex: 1;
-    }
-
-    .history-delta {
-      color: #e74c3c;
-      font-weight: 600;
-      font-size: 12px;
-    }
-
-    .history-time {
-      color: #444;
-      font-size: 11px;
-      min-width: 60px;
-      text-align: right;
-    }
-
-    /* Totals bar */
-    .totals-bar {
-      background: #141414;
-      border: 1px solid #2a2a2a;
-      border-radius: 10px;
-      padding: 16px 20px;
-      margin-bottom: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .total-check {
-      font-size: 13px;
-      color: #555;
-    }
-
-    .total-check span {
-      color: #2ecc71;
-      font-weight: 600;
-    }
-
-    @media (max-width: 640px) {
-      header { padding: 14px 16px; }
-      .main { padding: 20px 16px; }
-      .header-stats { gap: 16px; }
-      .stat-value { font-size: 14px; }
+    @media (max-width: 600px) {
+      header { padding: 12px 16px; }
+      .main { padding: 20px 14px; }
+      .header-stats { display: none; }
     }
   </style>
 </head>
 <body>
   <div id="root"></div>
-
   <script type="text/babel">
-    const { useState, useCallback, useEffect, useRef } = React;
+    const { useState, useEffect, useRef, useCallback } = React;
 
     const TOTAL_RENT = 15600;
     const BID_STEP = 25;
+    const P = TOTAL_RENT / 14;
     const NUM_ROOMS = 9;
 
-    // 2P + 8*(1.5P) = 15600 → 14P = 15600
-    const P = TOTAL_RENT / 14;
-    const DOUBLE_PRICE = 2 * P;
-    const SINGLE_PRICE = 1.5 * P;
-
     const ROOM_DEFS = [
-      { id: 'double',  name: 'Downstairs Double',        isDouble: true,  initPrice: DOUBLE_PRICE },
-      { id: 'first',   name: 'First Floor Room',          isDouble: false, initPrice: SINGLE_PRICE },
-      { id: 'sf1',     name: 'Second Floor Room 1',       isDouble: false, initPrice: SINGLE_PRICE },
-      { id: 'sf2',     name: 'Second Floor Room 2',       isDouble: false, initPrice: SINGLE_PRICE },
-      { id: 'sf3',     name: 'Second Floor Room 3',       isDouble: false, initPrice: SINGLE_PRICE },
-      { id: 'sf4',     name: 'Second Floor Room 4',       isDouble: false, initPrice: SINGLE_PRICE },
-      { id: 'sfb',     name: 'Second Floor Balcony Room', isDouble: false, initPrice: SINGLE_PRICE },
-      { id: 'adu1',    name: 'ADU 1',                     isDouble: false, initPrice: SINGLE_PRICE },
-      { id: 'adu2',    name: 'ADU 2',                     isDouble: false, initPrice: SINGLE_PRICE },
+      { id: 'double', name: 'Downstairs Double',        slots: 2, isDouble: true,  initPrice: 2 * P },
+      { id: 'first',  name: 'First Floor Room',          slots: 1, isDouble: false, initPrice: 1.5 * P },
+      { id: 'sf1',    name: 'Second Floor Room 1',       slots: 1, isDouble: false, initPrice: 1.5 * P },
+      { id: 'sf2',    name: 'Second Floor Room 2',       slots: 1, isDouble: false, initPrice: 1.5 * P },
+      { id: 'sf3',    name: 'Second Floor Room 3',       slots: 1, isDouble: false, initPrice: 1.5 * P },
+      { id: 'sf4',    name: 'Second Floor Room 4',       slots: 1, isDouble: false, initPrice: 1.5 * P },
+      { id: 'sfb',    name: 'Second Floor Balcony Room', slots: 1, isDouble: false, initPrice: 1.5 * P },
+      { id: 'adu1',   name: 'ADU 1',                     slots: 1, isDouble: false, initPrice: 1.5 * P },
+      { id: 'adu2',   name: 'ADU 2',                     slots: 1, isDouble: false, initPrice: 1.5 * P },
     ];
 
-    const USER_COLORS = [
-      '#e74c3c','#e67e22','#f1c40f','#2ecc71','#1abc9c',
-      '#3498db','#9b59b6','#e91e63','#ff5722','#00bcd4',
-    ];
-
-    const DEFAULT_USERS = Array.from({ length: 10 }, (_, i) => `Person ${i + 1}`);
+    function genId() {
+      return Math.random().toString(36).slice(2) + Date.now().toString(36);
+    }
 
     function fmt(n) {
       return '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -445,246 +453,345 @@
     function timeSince(ts) {
       const s = Math.floor((Date.now() - ts) / 1000);
       if (s < 60) return `${s}s ago`;
-      if (s < 3600) return `${Math.floor(s/60)}m ago`;
-      return `${Math.floor(s/3600)}h ago`;
+      if (s < 3600) return `${Math.floor(s / 60)}m ago`;
+      return `${Math.floor(s / 3600)}h ago`;
     }
 
-    function loadState() {
-      try {
-        const s = localStorage.getItem('rentbidder_v2');
-        if (s) return JSON.parse(s);
-      } catch {}
-      return null;
+    function JoinScreen({ onJoin }) {
+      const [name, setName] = useState('');
+      const submit = () => { const t = name.trim(); if (t) onJoin(t); };
+      return (
+        <div className="join-screen">
+          <div className="join-card">
+            <h1>Rent Bidder</h1>
+            <p className="join-subtitle">Enter your name to join the room assignment</p>
+            <input
+              className="join-input"
+              placeholder="Your name"
+              value={name}
+              autoFocus
+              onChange={e => setName(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && submit()}
+            />
+            <button className="join-btn" onClick={submit} disabled={!name.trim()}>
+              Join
+            </button>
+          </div>
+        </div>
+      );
     }
-
-    function saveState(state) {
-      try { localStorage.setItem('rentbidder_v2', JSON.stringify(state)); } catch {}
-    }
-
-    const initPrices = () => Object.fromEntries(ROOM_DEFS.map(r => [r.id, r.initPrice]));
 
     function App() {
-      const saved = loadState();
-      const [prices, setPrices] = useState(() => saved?.prices ?? initPrices());
-      const [users, setUsers] = useState(() => saved?.users ?? DEFAULT_USERS);
-      const [history, setHistory] = useState(() => saved?.history ?? []);
-      const [currentUser, setCurrentUser] = useState(null);
-      const [editingUser, setEditingUser] = useState(null);
+      const [myId] = useState(() => {
+        let id = localStorage.getItem('rb_uid');
+        if (!id) { id = genId(); localStorage.setItem('rb_uid', id); }
+        return id;
+      });
+      const [myName, setMyName] = useState(() => localStorage.getItem('rb_name') || '');
+      const [joined, setJoined] = useState(() => !!localStorage.getItem('rb_name'));
+      const [myColor, setMyColor] = useState('#888');
+      const [connected, setConnected] = useState(false);
+      const [serverState, setServerState] = useState(null);
+      const [confirming, setConfirming] = useState(null); // { roomId, action: 'claim'|'bid' }
       const [now, setNow] = useState(Date.now());
+      const wsRef = useRef(null);
+      const nameRef = useRef(myName);
 
+      useEffect(() => { nameRef.current = myName; }, [myName]);
       useEffect(() => {
-        const id = setInterval(() => setNow(Date.now()), 10000);
+        const id = setInterval(() => setNow(Date.now()), 15000);
         return () => clearInterval(id);
       }, []);
 
       useEffect(() => {
-        saveState({ prices, users, history });
-      }, [prices, users, history]);
+        if (!joined || !myName) return;
+        let dead = false;
+        function connect() {
+          if (dead) return;
+          const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+          const socket = new WebSocket(`${proto}//${location.host}`);
+          wsRef.current = socket;
+          socket.onopen = () => {
+            setConnected(true);
+            socket.send(JSON.stringify({ type: 'join', userId: myId, name: nameRef.current }));
+          };
+          socket.onmessage = e => {
+            const msg = JSON.parse(e.data);
+            if (msg.type === 'welcome') { setMyColor(msg.color); setServerState(msg.state); }
+            else if (msg.type === 'state') { setServerState(msg.state); }
+          };
+          socket.onclose = () => { setConnected(false); if (!dead) setTimeout(connect, 2000); };
+          socket.onerror = () => {};
+        }
+        connect();
+        return () => { dead = true; wsRef.current?.close(); };
+      }, [joined, myId, myName]);
 
-      const bid = useCallback((roomId) => {
-        if (currentUser === null) return;
-        const decrease = BID_STEP / (NUM_ROOMS - 1);
-        setPrices(prev => {
-          const next = { ...prev };
-          ROOM_DEFS.forEach(r => {
-            next[r.id] = r.id === roomId
-              ? prev[r.id] + BID_STEP
-              : prev[r.id] - decrease;
-          });
-          return next;
-        });
-        setHistory(prev => [
-          { user: currentUser, userName: users[currentUser], roomId, ts: Date.now() },
-          ...prev,
-        ]);
-      }, [currentUser, users]);
+      const send = useCallback(msg => {
+        const ws = wsRef.current;
+        if (ws && ws.readyState === 1) ws.send(JSON.stringify({ ...msg, userId: myId }));
+      }, [myId]);
 
-      const reset = () => {
-        if (!confirm('Reset all bids and prices?')) return;
-        setPrices(initPrices());
-        setHistory([]);
-        setCurrentUser(null);
+      const handleJoin = name => {
+        localStorage.setItem('rb_name', name);
+        setMyName(name);
+        setJoined(true);
       };
 
-      const updateUserName = (idx, name) => {
-        setUsers(prev => {
-          const next = [...prev];
-          next[idx] = name || `Person ${idx + 1}`;
-          return next;
-        });
-        // update history entries
-        setHistory(prev => prev.map(h =>
-          h.user === idx ? { ...h, userName: name || `Person ${idx + 1}` } : h
-        ));
+      const leave = () => {
+        localStorage.removeItem('rb_name');
+        wsRef.current?.close();
+        setJoined(false);
+        setMyName('');
+        setServerState(null);
+        setConfirming(null);
       };
 
-      const total = ROOM_DEFS.reduce((s, r) => s + prices[r.id], 0);
+      if (!joined) return <JoinScreen onJoin={handleJoin} />;
+      if (!serverState) return <div className="loading">Connecting to server…</div>;
 
-      // Compute bidder info per room
-      const roomBidders = {};
-      ROOM_DEFS.forEach(r => { roomBidders[r.id] = {}; });
-      history.forEach(h => {
-        if (!roomBidders[h.roomId]) roomBidders[h.roomId] = {};
-        roomBidders[h.roomId][h.user] = (roomBidders[h.roomId][h.user] || 0) + 1;
-      });
+      const { prices, claims, history, users } = serverState;
+
+      // My current room and how I got there
+      let myRoom = null;
+      let myEntry = null;
+      for (const room of ROOM_DEFS) {
+        const entry = (claims[room.id] || []).find(c => c.userId === myId);
+        if (entry) { myRoom = room; myEntry = entry; break; }
+      }
+      const isLocked = myEntry?.via === 'bid';
+
+      const totalClaimed = Object.values(claims).reduce((s, c) => s + c.length, 0);
+
+      const doAction = (roomId, action) => {
+        send({ type: action, roomId });
+        setConfirming(null);
+      };
 
       return (
         <div>
           <header>
             <h1>Rent Bidder</h1>
-            <div className="header-stats">
-              <div className="stat">
-                <div className="stat-label">Total Rent</div>
-                <div className="stat-value">{fmt(TOTAL_RENT)}</div>
+            <div className="header-right">
+              {!connected && <span className="disconnected-pill">Reconnecting…</span>}
+              {isLocked && (
+                <span className="locked-pill">
+                  Locked in · {myRoom?.name}
+                </span>
+              )}
+              <div
+                className="my-identity"
+                style={{ borderColor: myColor + '50' }}
+                title="Click to leave"
+                onClick={leave}
+              >
+                <span className="identity-dot" style={{ background: myColor }} />
+                <span style={{ color: '#ddd' }}>{myName}</span>
+                {myRoom && <span className="my-room-tag">{myRoom.name}</span>}
               </div>
-              <div className="stat">
-                <div className="stat-label">Running Total</div>
-                <div className="stat-value" style={{ color: Math.abs(total - TOTAL_RENT) < 0.01 ? '#2ecc71' : '#e74c3c' }}>
-                  {fmt(total)}
+              <div className="header-stats">
+                <div>
+                  <div className="stat-label">Total Rent</div>
+                  <div className="stat-value">{fmt(TOTAL_RENT)}</div>
+                </div>
+                <div>
+                  <div className="stat-label">Assigned</div>
+                  <div className="stat-value">{totalClaimed}/10</div>
                 </div>
               </div>
-              <button className="reset-btn" onClick={reset}>Reset</button>
+              <button className="reset-btn" onClick={() => { if (confirm('Reset all bids and claims?')) send({ type: 'reset' }); }}>
+                Reset
+              </button>
             </div>
           </header>
 
           <div className="main">
-            {/* User selector */}
-            <div className="user-section">
-              <div className="section-label">Who are you?</div>
-              <div className="users-grid">
-                {users.map((name, i) => (
-                  <button
-                    key={i}
-                    className={`user-btn${currentUser === i ? ' active' : ''}`}
-                    onClick={() => setCurrentUser(currentUser === i ? null : i)}
-                  >
-                    <div
-                      className="user-avatar"
-                      style={{
-                        background: currentUser === i ? USER_COLORS[i] + '30' : '#2a2a2a',
-                        color: USER_COLORS[i],
-                      }}
-                    >
-                      {name.charAt(0).toUpperCase()}
+            {/* Online users */}
+            <div className="online-section">
+              <div className="section-label">In Session</div>
+              <div className="online-list">
+                {Object.values(users).map(u => {
+                  const inRoom = ROOM_DEFS.find(r => (claims[r.id] || []).some(c => c.userId === u.id));
+                  const entry = inRoom ? (claims[inRoom.id] || []).find(c => c.userId === u.id) : null;
+                  const locked = entry?.via === 'bid';
+                  return (
+                    <div key={u.id} className={`online-chip${u.id === myId ? ' me' : ''}`} style={{ borderColor: u.color + '40' }}>
+                      <span className="online-dot" style={{ background: u.color }} />
+                      <span>{u.name}{u.id === myId ? ' (you)' : ''}</span>
+                      {inRoom && (
+                        <span className="chip-room" style={{ color: u.color }}>
+                          · {inRoom.name}{locked ? ' 🔒' : ''}
+                        </span>
+                      )}
                     </div>
-                    {editingUser === i ? (
-                      <input
-                        className="user-name-input"
-                        defaultValue={name}
-                        autoFocus
-                        onClick={e => e.stopPropagation()}
-                        onBlur={e => { updateUserName(i, e.target.value.trim()); setEditingUser(null); }}
-                        onKeyDown={e => { if (e.key === 'Enter' || e.key === 'Escape') e.target.blur(); }}
-                      />
-                    ) : (
-                      <span
-                        className="user-name-display"
-                        onDoubleClick={e => { e.stopPropagation(); setEditingUser(i); }}
-                        title="Double-click to rename"
-                      >
-                        {name}
-                      </span>
-                    )}
-                  </button>
-                ))}
+                  );
+                })}
               </div>
-              {currentUser === null && (
-                <div style={{ marginTop: 10, fontSize: 13, color: '#555' }}>
-                  Select yourself above to start bidding · Double-click a name to rename
-                </div>
-              )}
             </div>
 
             {/* Rooms */}
             <div className="section-label">Rooms</div>
             <div className="rooms-grid">
               {ROOM_DEFS.map(room => {
-                const price = prices[room.id];
+                const price = prices[room.id] ?? room.initPrice;
                 const delta = price - room.initPrice;
-                const absDelta = Math.abs(delta);
                 const direction = Math.abs(delta) < 0.01 ? 'neutral' : delta > 0 ? 'up' : 'down';
-                const bidders = roomBidders[room.id] || {};
-                const bidderEntries = Object.entries(bidders);
+                const roomClaims = claims[room.id] || [];
+                const iAmIn = roomClaims.some(c => c.userId === myId);
+                const openSlots = room.slots - roomClaims.length;
+                const isFull = openSlots <= 0;
+                const isConfirming = confirming?.roomId === room.id;
+                // Dim cards when another card is in confirm state
+                const isDimmed = confirming && !isConfirming && !iAmIn;
+
+                // Per-person price for the double room after a bid
+                const bidPrice = price + BID_STEP;
+                const perPersonAfterBid = room.isDouble ? bidPrice / 2 : bidPrice;
 
                 return (
-                  <div key={room.id} className={`room-card ${direction}`}>
-                    <div className="room-card-header">
+                  <div
+                    key={room.id}
+                    className={[
+                      'room-card',
+                      direction,
+                      iAmIn ? 'mine' : '',
+                      isDimmed ? 'dimmed' : '',
+                      isConfirming ? 'confirming-card' : '',
+                    ].filter(Boolean).join(' ')}
+                    style={iAmIn ? { '--my-color': myColor } : {}}
+                  >
+                    <div className="room-card-top">
                       <div className="room-name">{room.name}</div>
                       <div className={`room-badge${room.isDouble ? ' double' : ''}`}>
                         {room.isDouble ? '2 people' : '1 person'}
                       </div>
                     </div>
 
-                    <div className="price-section">
-                      <div className="price-main">{fmt(price)}</div>
-                      {room.isDouble && (
-                        <div className="price-per-person">
-                          {fmt(price / 2)} per person
-                        </div>
-                      )}
-                      <div className={`price-delta ${direction}`}>
-                        {direction === 'neutral' && <span>Starting price</span>}
-                        {direction === 'up' && <span>↑ {fmt(absDelta)} above start</span>}
-                        {direction === 'down' && <span>↓ {fmt(absDelta)} below start</span>}
-                      </div>
+                    <div className="price-main">{fmt(price)}</div>
+                    {room.isDouble && <div className="price-per">{fmt(price / 2)}/person</div>}
+                    <div className={`price-delta ${direction}`}>
+                      {direction === 'neutral' && 'Starting price'}
+                      {direction === 'up' && `↑ ${fmt(Math.abs(delta))} above start`}
+                      {direction === 'down' && `↓ ${fmt(Math.abs(delta))} below start`}
                     </div>
 
-                    <div className="bidders-section">
-                      {bidderEntries.length > 0 && (
-                        <>
-                          <div className="bidders-label">Bids placed</div>
-                          <div className="bidders-list">
-                            {bidderEntries.map(([userIdx, count]) => (
-                              <span
-                                key={userIdx}
-                                className="bidder-chip"
-                                style={{ borderColor: USER_COLORS[+userIdx] + '60', color: USER_COLORS[+userIdx] }}
-                              >
-                                {users[+userIdx]}
-                                {count > 1 && <span className="bid-count-badge">×{count}</span>}
-                              </span>
-                            ))}
+                    {/* Claimers */}
+                    <div className="claimers">
+                      {roomClaims.length === 0
+                        ? <div className="unclaimed">Unclaimed</div>
+                        : roomClaims.map(c => (
+                          <div key={c.userId} className="claimer-row">
+                            <span className="claimer-dot" style={{ background: c.color }} />
+                            <span className={`claimer-name${c.userId === myId ? ' me' : ''}`}>
+                              {c.name}{c.userId === myId ? ' (you)' : ''}
+                            </span>
+                            <span className={`claimer-via ${c.via}`}>{c.via}</span>
                           </div>
-                        </>
+                        ))
+                      }
+                      {room.slots > 1 && openSlots > 0 && roomClaims.length > 0 && (
+                        <div className="open-slot">{openSlots} spot open</div>
                       )}
                     </div>
 
-                    <button
-                      className={`bid-button${currentUser !== null ? ' active-user' : ''}`}
-                      onClick={() => bid(room.id)}
-                      disabled={currentUser === null}
-                    >
-                      {currentUser === null ? 'Select yourself to bid' : `Bid +$${BID_STEP}`}
-                    </button>
+                    {/* Actions / Confirm UI */}
+                    {isConfirming ? (
+                      <div className="confirm-box">
+                        {confirming.action === 'claim' ? (
+                          <>
+                            <div className="confirm-price-row">
+                              <span className="confirm-price">{fmt(price)}</span>
+                              <span className="confirm-price-label">
+                                {room.isDouble ? `(${fmt(price / 2)}/person)` : '/month'}
+                              </span>
+                            </div>
+                            <div className="confirm-sub">
+                              Claim at current price — no change to other rooms.
+                            </div>
+                            <div className="confirm-btns">
+                              <button className="btn-confirm-claim" onClick={() => doAction(room.id, 'claim')}>
+                                Confirm Claim
+                              </button>
+                              <button className="btn-cancel" onClick={() => setConfirming(null)}>Cancel</button>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="confirm-price-row">
+                              <span className="confirm-price">{fmt(bidPrice)}</span>
+                              <span className="confirm-price-label">
+                                {room.isDouble ? `(${fmt(perPersonAfterBid)}/person)` : `+$${BID_STEP}`}
+                              </span>
+                            </div>
+                            <div className="confirm-sub">
+                              <span>+${BID_STEP} on this room</span> · other rooms each drop{' '}
+                              <span>{fmt(BID_STEP / (NUM_ROOMS - 1))}</span>
+                              {isFull && roomClaims[0] && (
+                                <><br />Evicts <span>{roomClaims[0].name}</span></>
+                              )}
+                            </div>
+                            <div className="confirm-btns">
+                              <button className="btn-confirm-bid" onClick={() => doAction(room.id, 'bid')}>
+                                {isFull ? 'Confirm Outbid' : 'Confirm Bid'}
+                              </button>
+                              <button className="btn-cancel" onClick={() => setConfirming(null)}>Cancel</button>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="room-actions">
+                        {iAmIn && myEntry?.via === 'claim' ? (
+                          <button className="btn-release" onClick={() => doAction(room.id, 'release')}>
+                            Release Claim
+                          </button>
+                        ) : isLocked ? (
+                          <div className="locked-msg">
+                            You're locked in to {myRoom?.name}
+                          </div>
+                        ) : (
+                          <>
+                            {openSlots > 0 && (
+                              <button className="btn-claim" onClick={() => setConfirming({ roomId: room.id, action: 'claim' })}>
+                                Claim
+                              </button>
+                            )}
+                            <button className="btn-bid" onClick={() => setConfirming({ roomId: room.id, action: 'bid' })}>
+                              {isFull ? `Outbid` : `Bid`}
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    )}
                   </div>
                 );
               })}
             </div>
 
-            {/* Bid history */}
-            <div className="history-section">
-              <div className="section-label">Bid History</div>
-              {history.length === 0 ? (
-                <div className="history-empty">No bids yet.</div>
-              ) : (
+            {/* History */}
+            <div className="section-label">History</div>
+            {history.length === 0
+              ? <div className="history-empty">No actions yet.</div>
+              : (
                 <div className="history-list">
                   {history.map((h, i) => {
                     const room = ROOM_DEFS.find(r => r.id === h.roomId);
+                    const u = users[h.userId];
                     return (
                       <div key={i} className="history-item">
-                        <span className="history-user" style={{ color: USER_COLORS[h.user] }}>
-                          {h.userName}
+                        <span className="h-user" style={{ color: u?.color || '#888' }}>{h.name}</span>
+                        <span className="h-verb" data-action={h.action}>
+                          {h.action === 'claim' ? 'claimed' : h.action === 'release' ? 'released' : 'outbid'}
                         </span>
-                        <span className="history-arrow">→</span>
-                        <span className="history-room">{room?.name}</span>
-                        <span className="history-delta">+${BID_STEP}</span>
-                        <span className="history-time">{timeSince(h.ts)}</span>
+                        <span className="h-room">{room?.name}</span>
+                        {h.action === 'bid' && <span className="h-delta">+${BID_STEP}</span>}
+                        <span className="h-time">{timeSince(h.ts)}</span>
                       </div>
                     );
                   })}
                 </div>
-              )}
-            </div>
+              )
+            }
           </div>
         </div>
       );
