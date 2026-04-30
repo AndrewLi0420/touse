@@ -127,8 +127,12 @@ wss.on('connection', ws => {
       const lockedRoom = ROOMS.find(r => r.id !== roomId && state.claims[r.id].some(c => c.userId === userId && c.via === 'bid'));
       if (lockedRoom) return;
 
-      const dec = BID_STEP / (NUM_ROOMS - 1);
-      ROOMS.forEach(r => { state.prices[r.id] += r.id === roomId ? BID_STEP : -dec; });
+      // Double is fixed-price; only singles participate in price adjustments
+      const singleRooms = ROOMS.filter(r => r.id !== 'double');
+      if (roomId !== 'double') {
+        const dec = BID_STEP / (singleRooms.length - 1);
+        singleRooms.forEach(r => { state.prices[r.id] += r.id === roomId ? BID_STEP : -dec; });
+      }
 
       // Move bidder into this room, evicting the earliest claimer if full
       ROOMS.forEach(r => { state.claims[r.id] = state.claims[r.id].filter(c => c.userId !== userId); });
