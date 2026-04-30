@@ -10,11 +10,11 @@ const P = TOTAL / 14;
 
 const ROOMS = [
   { id: 'double', name: 'Downstairs Double',        slots: 2, init: 2 * P },
-  { id: 'first',  name: 'First Floor Room',          slots: 1, init: 1.5 * P },
+  { id: 'first',  name: 'First Floor Room 1',         slots: 1, init: 1.5 * P },
   { id: 'sf1',    name: 'Second Floor Room 1',       slots: 1, init: 1.5 * P },
   { id: 'sf2',    name: 'Second Floor Room 2',       slots: 1, init: 1.5 * P },
   { id: 'sf3',    name: 'Second Floor Room 3',       slots: 1, init: 1.5 * P },
-  { id: 'sf4',    name: 'Second Floor Room 4',       slots: 1, init: 1.5 * P },
+  { id: 'sf4',    name: 'First Floor Room 2',         slots: 1, init: 1.5 * P },
   { id: 'sfb',    name: 'Second Floor Balcony Room', slots: 1, init: 1.5 * P },
   { id: 'adu1',   name: 'ADU 1',                     slots: 1, init: 1.5 * P },
   { id: 'adu2',   name: 'ADU 2',                     slots: 1, init: 1.5 * P },
