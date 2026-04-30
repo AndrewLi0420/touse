@@ -5,19 +5,23 @@ const { networkInterfaces } = require('os');
 
 const TOTAL = 15600;
 const BID_STEP = 25;
-const NUM_ROOMS = 9;
-const P = TOTAL / 14;
+const ADU_PRICE = 1500;
+// 2 doubles + 5 singles + 2 fixed ADUs; single = 1.5 * (double/2) => double = (4/3)*single
+// 2*(4/3)S + 5S = TOTAL - 2*ADU_PRICE  =>  (23/3)S = 12600  =>  S = 12600*3/23
+const DYNAMIC_TOTAL = TOTAL - 2 * ADU_PRICE;
+const SINGLE_INIT = DYNAMIC_TOTAL * 3 / 23;
+const DOUBLE_INIT = SINGLE_INIT * 4 / 3;
 
 const ROOMS = [
-  { id: 'double', name: 'Downstairs Double',        slots: 2, init: 2 * P },
-  { id: 'first',  name: 'First Floor Room 1',         slots: 1, init: 1.5 * P },
-  { id: 'sf1',    name: 'Second Floor Room 1',       slots: 1, init: 1.5 * P },
-  { id: 'sf2',    name: 'Second Floor Room 2',       slots: 1, init: 1.5 * P },
-  { id: 'sf3',    name: 'Second Floor Room 3',       slots: 1, init: 1.5 * P },
-  { id: 'sf4',    name: 'First Floor Room 2',         slots: 1, init: 1.5 * P },
-  { id: 'sfb',    name: 'Second Floor Balcony Room', slots: 1, init: 1.5 * P },
-  { id: 'adu1',   name: 'ADU 1',                     slots: 1, init: 1.5 * P },
-  { id: 'adu2',   name: 'ADU 2',                     slots: 1, init: 1.5 * P },
+  { id: 'double', name: 'Downstairs Double',        slots: 2, init: DOUBLE_INIT, pool: 'double' },
+  { id: 'first',  name: 'First Floor Room 1',        slots: 1, init: SINGLE_INIT, pool: 'single' },
+  { id: 'sf1',    name: 'Second Floor Room 1',       slots: 1, init: SINGLE_INIT, pool: 'single' },
+  { id: 'sf2',    name: 'Second Floor Room 2',       slots: 1, init: SINGLE_INIT, pool: 'single' },
+  { id: 'sf3',    name: 'Second Floor Room 3',       slots: 1, init: SINGLE_INIT, pool: 'single' },
+  { id: 'sf4',    name: 'First Floor Double',        slots: 2, init: DOUBLE_INIT, pool: 'double' },
+  { id: 'sfb',    name: 'Second Floor Balcony Room', slots: 1, init: SINGLE_INIT, pool: 'single' },
+  { id: 'adu1',   name: 'ADU 1',                     slots: 1, init: ADU_PRICE,   fixed: true },
+  { id: 'adu2',   name: 'ADU 2',                     slots: 1, init: ADU_PRICE,   fixed: true },
 ];
 
 const COLORS = [
@@ -127,11 +131,11 @@ wss.on('connection', ws => {
       const lockedRoom = ROOMS.find(r => r.id !== roomId && state.claims[r.id].some(c => c.userId === userId && c.via === 'bid'));
       if (lockedRoom) return;
 
-      // Double is fixed-price; only singles participate in price adjustments
-      const singleRooms = ROOMS.filter(r => r.id !== 'double');
-      if (roomId !== 'double') {
-        const dec = BID_STEP / (singleRooms.length - 1);
-        singleRooms.forEach(r => { state.prices[r.id] += r.id === roomId ? BID_STEP : -dec; });
+      // Fixed rooms (ADUs) never change; doubles and singles each bid within their own pool
+      if (!room.fixed) {
+        const poolRooms = ROOMS.filter(r => r.pool === room.pool);
+        const dec = BID_STEP / (poolRooms.length - 1);
+        poolRooms.forEach(r => { state.prices[r.id] += r.id === roomId ? BID_STEP : -dec; });
       }
 
       // Move bidder into this room, evicting the earliest claimer if full

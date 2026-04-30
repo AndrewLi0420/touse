@@ -427,19 +427,21 @@
 
     const TOTAL_RENT = 15600;
     const BID_STEP = 25;
-    const P = TOTAL_RENT / 14;
-    const NUM_ROOMS = 9;
+    const ADU_PRICE = 1500;
+    const DYNAMIC_TOTAL = TOTAL_RENT - 2 * ADU_PRICE;
+    const SINGLE_INIT = DYNAMIC_TOTAL * 3 / 23;
+    const DOUBLE_INIT = SINGLE_INIT * 4 / 3;
 
     const ROOM_DEFS = [
-      { id: 'double', name: 'Downstairs Double',        slots: 2, isDouble: true,  initPrice: 2 * P },
-      { id: 'first',  name: 'First Floor Room 1',         slots: 1, isDouble: false, initPrice: 1.5 * P },
-      { id: 'sf1',    name: 'Second Floor Room 1',       slots: 1, isDouble: false, initPrice: 1.5 * P },
-      { id: 'sf2',    name: 'Second Floor Room 2',       slots: 1, isDouble: false, initPrice: 1.5 * P },
-      { id: 'sf3',    name: 'Second Floor Room 3',       slots: 1, isDouble: false, initPrice: 1.5 * P },
-      { id: 'sf4',    name: 'First Floor Room 2',         slots: 1, isDouble: false, initPrice: 1.5 * P },
-      { id: 'sfb',    name: 'Second Floor Balcony Room', slots: 1, isDouble: false, initPrice: 1.5 * P },
-      { id: 'adu1',   name: 'ADU 1',                     slots: 1, isDouble: false, initPrice: 1.5 * P },
-      { id: 'adu2',   name: 'ADU 2',                     slots: 1, isDouble: false, initPrice: 1.5 * P },
+      { id: 'double', name: 'Downstairs Double',        slots: 2, isDouble: true,  initPrice: DOUBLE_INIT, pool: 'double' },
+      { id: 'first',  name: 'First Floor Room 1',        slots: 1, isDouble: false, initPrice: SINGLE_INIT, pool: 'single' },
+      { id: 'sf1',    name: 'Second Floor Room 1',       slots: 1, isDouble: false, initPrice: SINGLE_INIT, pool: 'single' },
+      { id: 'sf2',    name: 'Second Floor Room 2',       slots: 1, isDouble: false, initPrice: SINGLE_INIT, pool: 'single' },
+      { id: 'sf3',    name: 'Second Floor Room 3',       slots: 1, isDouble: false, initPrice: SINGLE_INIT, pool: 'single' },
+      { id: 'sf4',    name: 'First Floor Double',        slots: 2, isDouble: true,  initPrice: DOUBLE_INIT, pool: 'double' },
+      { id: 'sfb',    name: 'Second Floor Balcony Room', slots: 1, isDouble: false, initPrice: SINGLE_INIT, pool: 'single' },
+      { id: 'adu1',   name: 'ADU 1',                     slots: 1, isDouble: false, initPrice: ADU_PRICE,   fixed: true },
+      { id: 'adu2',   name: 'ADU 2',                     slots: 1, isDouble: false, initPrice: ADU_PRICE,   fixed: true },
     ];
 
     function genId() {
@@ -644,9 +646,11 @@
                 // Dim cards when another card is in confirm state
                 const isDimmed = confirming && !isConfirming && !iAmIn;
 
-                // Per-person price for the double room after a bid
-                const bidPrice = price + BID_STEP;
+                // Per-person price for double rooms after a bid; fixed rooms don't change
+                const bidPrice = room.fixed ? price : price + BID_STEP;
                 const perPersonAfterBid = room.isDouble ? bidPrice / 2 : bidPrice;
+                const poolRooms = room.pool ? ROOM_DEFS.filter(r => r.pool === room.pool) : [];
+                const dropPerRoom = poolRooms.length > 1 ? BID_STEP / (poolRooms.length - 1) : 0;
 
                 return (
                   <div
@@ -724,11 +728,18 @@
                               </span>
                             </div>
                             <div className="confirm-sub">
-                              <span>+${BID_STEP} on this room</span> · other rooms each drop{' '}
-                              <span>{fmt(BID_STEP / (NUM_ROOMS - 1))}</span>
-                              {isFull && roomClaims[0] && (
-                                <><br />Evicts <span>{roomClaims[0].name}</span></>
-                              )}
+                              {room.fixed
+                                ? 'Fixed price — claims your spot, no price change.'
+                                : <><span>+${BID_STEP} on this room</span>{' · '}
+                                    {room.pool === 'double'
+                                      ? <>the other double drops <span>{fmt(dropPerRoom)}</span></>
+                                      : <>other singles each drop <span>{fmt(dropPerRoom)}</span></>
+                                    }
+                                    {isFull && roomClaims[0] && (
+                                      <><br />Evicts <span>{roomClaims[0].name}</span></>
+                                    )}
+                                  </>
+                              }
                             </div>
                             <div className="confirm-btns">
                               <button className="btn-confirm-bid" onClick={() => doAction(room.id, 'bid')}>
