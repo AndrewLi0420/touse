@@ -411,6 +411,7 @@
     .h-verb[data-action="claim"]   { color: #3d7a4a; }
     .h-verb[data-action="release"] { color: #663333; }
     .h-verb[data-action="bid"]     { color: #7a6020; }
+    .h-verb[data-action="reset"]   { color: #aa3333; }
     .h-room  { color: #888; flex: 1; }
     .h-delta { color: #b08020; font-weight: 600; font-size: 12px; }
     .h-time  { color: #333; font-size: 11px; min-width: 55px; text-align: right; }
@@ -811,9 +812,9 @@
                       <div key={i} className="history-item">
                         <span className="h-user" style={{ color: u?.color || '#888' }}>{h.name}</span>
                         <span className="h-verb" data-action={h.action}>
-                          {h.action === 'claim' ? 'claimed' : h.action === 'release' ? 'released' : 'outbid'}
+                          {h.action === 'claim' ? 'claimed' : h.action === 'release' ? 'released' : h.action === 'reset' ? 'reset all' : 'outbid'}
                         </span>
-                        <span className="h-room">{room?.name}</span>
+                        {h.action !== 'reset' && <span className="h-room">{room?.name}</span>}
                         {h.action === 'bid' && <span className="h-delta">+${BID_STEP}</span>}
                         <span className="h-time">{timeSince(h.ts)}</span>
                       </div>

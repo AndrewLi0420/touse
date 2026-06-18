@@ -37,6 +37,7 @@ function initState() {
 }
 
 let state = initState();
+let resetLog = [];
 
 const server = http.createServer((req, res) => {
   if (req.url.startsWith('/rooms/')) {
@@ -63,10 +64,11 @@ function broadcastAll(msg) {
 }
 
 function publicState() {
+  const combined = [...state.history, ...resetLog].sort((a, b) => b.ts - a.ts);
   return {
     prices: state.prices,
     claims: state.claims,
-    history: state.history.slice(0, 60),
+    history: combined.slice(0, 60),
     users: Object.fromEntries(
       Object.entries(state.users).map(([id, u]) => [id, { id, name: u.name, color: u.color }])
     ),
@@ -154,6 +156,7 @@ wss.on('connection', ws => {
     }
 
     if (type === 'reset') {
+      resetLog.push({ userId, name: user.name, action: 'reset', ts: Date.now() });
       state = initState();
       colorIdx = 0;
       broadcastAll({ type: 'state', state: publicState() });
