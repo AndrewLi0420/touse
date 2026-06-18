@@ -1,27 +1,23 @@
 const http = require('http');
 const fs = require('fs');
+const path = require('path');
 const { WebSocketServer } = require('ws');
 const { networkInterfaces } = require('os');
 
-const TOTAL = 15600;
 const BID_STEP = 25;
-const ADU_PRICE = 1500;
-// 2 doubles + 5 singles + 2 fixed ADUs; single = 1.5 * (double/2) => double = (4/3)*single
-// 2*(4/3)S + 5S = TOTAL - 2*ADU_PRICE  =>  (23/3)S = 12600  =>  S = 12600*3/23
-const DYNAMIC_TOTAL = TOTAL - 2 * ADU_PRICE;
-const SINGLE_INIT = DYNAMIC_TOTAL * 3 / 23;
-const DOUBLE_INIT = SINGLE_INIT * 4 / 3;
+const SINGLE_INIT = 1613.80;
+const DOUBLE_INIT = 2151.70;
 
 const ROOMS = [
-  { id: 'double', name: 'Downstairs Double',        slots: 2, init: DOUBLE_INIT, pool: 'double' },
-  { id: 'first',  name: 'First Floor Room 1',        slots: 1, init: SINGLE_INIT, pool: 'single' },
-  { id: 'sf1',    name: 'Second Floor Room 1',       slots: 1, init: SINGLE_INIT, pool: 'single' },
-  { id: 'sf2',    name: 'Second Floor Room 2',       slots: 1, init: SINGLE_INIT, pool: 'single' },
-  { id: 'sf3',    name: 'Second Floor Room 3',       slots: 1, init: SINGLE_INIT, pool: 'single' },
-  { id: 'sf4',    name: 'First Floor Double',        slots: 2, init: DOUBLE_INIT, pool: 'double' },
-  { id: 'sfb',    name: 'Second Floor Balcony Room', slots: 1, init: SINGLE_INIT, pool: 'single' },
-  { id: 'adu1',   name: 'ADU 1',                     slots: 1, init: ADU_PRICE,   fixed: true },
-  { id: 'adu2',   name: 'ADU 2',                     slots: 1, init: ADU_PRICE,   fixed: true },
+  { id: 'double', name: 'Downstairs Double',      slots: 1, init: DOUBLE_INIT, pool: 'double' },
+  { id: 'first',  name: 'First Floor Single',      slots: 1, init: SINGLE_INIT, pool: 'single' },
+  { id: 'sf1',    name: 'Second Floor Single 1',   slots: 1, init: SINGLE_INIT, pool: 'single' },
+  { id: 'sf2',    name: 'Second Floor Single 2',   slots: 1, init: SINGLE_INIT, pool: 'single' },
+  { id: 'sf3',    name: 'Second Floor Piano Room', slots: 1, init: SINGLE_INIT, pool: 'single' },
+  { id: 'sf4',    name: 'First Floor Double',      slots: 1, init: DOUBLE_INIT, pool: 'double' },
+  { id: 'sfb',    name: 'Second Floor Balcony',    slots: 1, init: SINGLE_INIT, pool: 'single' },
+  { id: 'adu1',   name: 'ADU Room 1',              slots: 1, init: SINGLE_INIT, pool: 'single' },
+  { id: 'adu2',   name: 'ADU Room 2',              slots: 1, init: SINGLE_INIT, pool: 'single' },
 ];
 
 const COLORS = [
@@ -43,6 +39,15 @@ function initState() {
 let state = initState();
 
 const server = http.createServer((req, res) => {
+  if (req.url.startsWith('/rooms/')) {
+    const safe = path.basename(req.url.slice(7));
+    fs.readFile(path.join(__dirname, 'rooms', safe), (err, data) => {
+      if (err) { res.writeHead(404); res.end(); return; }
+      res.writeHead(200, { 'Content-Type': 'image/png' });
+      res.end(data);
+    });
+    return;
+  }
   fs.readFile(__dirname + '/index.html', (err, data) => {
     if (err) { res.writeHead(404); res.end(); return; }
     res.writeHead(200, { 'Content-Type': 'text/html' });

@@ -6,7 +6,7 @@
   <title>Rent Bidder</title>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.22.20/babel.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -231,6 +231,8 @@
       margin-bottom: 12px;
     }
     .room-name { font-size: 14px; font-weight: 600; color: #ddd; line-height: 1.3; }
+    .room-name-hover { cursor: pointer; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; text-decoration-color: #444; }
+    .room-name-hover:hover { color: #fff; text-decoration-color: #888; }
     .room-badge {
       font-size: 10px;
       font-weight: 600;
@@ -427,21 +429,19 @@
 
     const TOTAL_RENT = 15600;
     const BID_STEP = 25;
-    const ADU_PRICE = 1500;
-    const DYNAMIC_TOTAL = TOTAL_RENT - 2 * ADU_PRICE;
-    const SINGLE_INIT = DYNAMIC_TOTAL * 3 / 23;
-    const DOUBLE_INIT = SINGLE_INIT * 4 / 3;
+    const SINGLE_INIT = 1613.80;
+    const DOUBLE_INIT = 2151.70;
 
     const ROOM_DEFS = [
-      { id: 'double', name: 'Downstairs Double',        slots: 2, isDouble: true,  initPrice: DOUBLE_INIT, pool: 'double' },
-      { id: 'first',  name: 'First Floor Room 1',        slots: 1, isDouble: false, initPrice: SINGLE_INIT, pool: 'single' },
-      { id: 'sf1',    name: 'Second Floor Room 1',       slots: 1, isDouble: false, initPrice: SINGLE_INIT, pool: 'single' },
-      { id: 'sf2',    name: 'Second Floor Room 2',       slots: 1, isDouble: false, initPrice: SINGLE_INIT, pool: 'single' },
-      { id: 'sf3',    name: 'Second Floor Room 3',       slots: 1, isDouble: false, initPrice: SINGLE_INIT, pool: 'single' },
-      { id: 'sf4',    name: 'First Floor Double',        slots: 2, isDouble: true,  initPrice: DOUBLE_INIT, pool: 'double' },
-      { id: 'sfb',    name: 'Second Floor Balcony Room', slots: 1, isDouble: false, initPrice: SINGLE_INIT, pool: 'single' },
-      { id: 'adu1',   name: 'ADU 1',                     slots: 1, isDouble: false, initPrice: ADU_PRICE,   fixed: true },
-      { id: 'adu2',   name: 'ADU 2',                     slots: 1, isDouble: false, initPrice: ADU_PRICE,   fixed: true },
+      { id: 'double', name: 'Downstairs Double',      slots: 1, isDouble: true,  initPrice: DOUBLE_INIT, pool: 'double', image: 'downstairs_double.png' },
+      { id: 'first',  name: 'First Floor Single',      slots: 1, isDouble: false, initPrice: SINGLE_INIT, pool: 'single', image: 'first_floor_single.png' },
+      { id: 'sf1',    name: 'Second Floor Single 1',   slots: 1, isDouble: false, initPrice: SINGLE_INIT, pool: 'single', image: 'second_floor_single_1.png' },
+      { id: 'sf2',    name: 'Second Floor Single 2',   slots: 1, isDouble: false, initPrice: SINGLE_INIT, pool: 'single', image: 'second_floor_single_2.png' },
+      { id: 'sf3',    name: 'Second Floor Piano Room', slots: 1, isDouble: false, initPrice: SINGLE_INIT, pool: 'single', image: 'second_floor_single_piano.png' },
+      { id: 'sf4',    name: 'First Floor Double',      slots: 1, isDouble: true,  initPrice: DOUBLE_INIT, pool: 'double', image: 'first_floor_double.png' },
+      { id: 'sfb',    name: 'Second Floor Balcony',    slots: 1, isDouble: false, initPrice: SINGLE_INIT, pool: 'single', image: 'second_floor_single_balcony.png' },
+      { id: 'adu1',   name: 'ADU Room 1',              slots: 1, isDouble: false, initPrice: SINGLE_INIT, pool: 'single', image: 'adu_room_1.png' },
+      { id: 'adu2',   name: 'ADU Room 2',              slots: 1, isDouble: false, initPrice: SINGLE_INIT, pool: 'single', image: 'adu_room_2.png' },
     ];
 
     function genId() {
@@ -495,6 +495,8 @@
       const [connected, setConnected] = useState(false);
       const [serverState, setServerState] = useState(null);
       const [confirming, setConfirming] = useState(null); // { roomId, action: 'claim'|'bid' }
+      const [imagePreview, setImagePreview] = useState(null); // roomId
+      const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
       const [now, setNow] = useState(Date.now());
       const wsRef = useRef(null);
       const nameRef = useRef(myName);
@@ -572,6 +574,7 @@
 
       return (
         <div>
+          {imagePreview && <RoomImageTooltip roomId={imagePreview} pos={tooltipPos} />}
           <header>
             <h1>Rent Bidder</h1>
             <div className="header-right">
@@ -598,7 +601,7 @@
                 </div>
                 <div>
                   <div className="stat-label">Assigned</div>
-                  <div className="stat-value">{totalClaimed}/10</div>
+                  <div className="stat-value">{totalClaimed}/9</div>
                 </div>
               </div>
               <button className="reset-btn" onClick={() => { if (confirm('Reset all bids and claims?')) send({ type: 'reset' }); }}>
@@ -665,7 +668,23 @@
                     style={iAmIn ? { '--my-color': myColor } : {}}
                   >
                     <div className="room-card-top">
-                      <div className="room-name">{room.name}</div>
+                      <div
+                        className="room-name room-name-hover"
+                        onMouseEnter={e => {
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          setTooltipPos({ x: rect.left, y: rect.bottom + 8 });
+                          setImagePreview(room.id);
+                        }}
+                        onMouseLeave={() => setImagePreview(null)}
+                        onClick={e => {
+                          e.stopPropagation();
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          setTooltipPos({ x: rect.left, y: rect.bottom + 8 });
+                          setImagePreview(prev => prev === room.id ? null : room.id);
+                        }}
+                      >
+                        {room.name}
+                      </div>
                       <div className={`room-badge${room.isDouble ? ' double' : ''}`}>
                         {room.isDouble ? '2 people' : '1 person'}
                       </div>
@@ -804,6 +823,27 @@
               )
             }
           </div>
+        </div>
+      );
+    }
+
+    function RoomImageTooltip({ roomId, pos }) {
+      const room = ROOM_DEFS.find(r => r.id === roomId);
+      if (!room?.image) return null;
+      const x = Math.min(pos.x, window.innerWidth - 292);
+      const y = Math.min(pos.y, window.innerHeight - 220);
+      return (
+        <div style={{
+          position: 'fixed', top: y, left: x, zIndex: 1000,
+          background: '#1a1a1a', border: '1px solid #333', borderRadius: '12px',
+          padding: '8px', boxShadow: '0 8px 32px rgba(0,0,0,0.7)', pointerEvents: 'none',
+        }}>
+          <img
+            src={`/rooms/${room.image}`}
+            alt={room.name}
+            style={{ width: '276px', height: '180px', objectFit: 'cover', borderRadius: '8px', display: 'block' }}
+          />
+          <div style={{ fontSize: '12px', color: '#777', marginTop: '6px', textAlign: 'center' }}>{room.name}</div>
         </div>
       );
     }
